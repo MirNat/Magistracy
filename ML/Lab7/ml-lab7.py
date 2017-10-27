@@ -101,16 +101,15 @@ def coefficients_sgd(train, l_rate, n_epoch):
 def coefficients_bgd(train, l_rate, n_epoch):
 	coef = [0.0 for i in range(len(train[0]))]
 	for epoch in range(n_epoch):
-		for i in range(len(train[0])-1):
-			for row in train:
-				sum_error_row = 0
-				yhat = predict(row, coef)
-				error = yhat - row[-1]
-				coef[0] = coef[0] - l_rate * error
-				for i in range(len(row)-1):
-					sum_error_row = sum_error_row + error * row[i]		
-			coef[i + 1] = coef[i + 1] - l_rate * sum_error_row
-			print(coef[i + 1],i)
+		sum_error_row = [0.0 for i in range(len(train[0]))]
+		for row in train:			
+			yhat = predict(row, coef)
+			error = yhat - row[-1]
+			coef[0] = coef[0] - l_rate * error
+			for i in range(len(row)-1):
+				sum_error_row[i] = sum_error_row[i] + error * row[i]	
+		for i in range(len(train[0])-1):	
+			coef[i + 1] = coef[i + 1] - l_rate * sum_error_row[i]
 			# print(l_rate, n_epoch, error)
 	return coef
 
